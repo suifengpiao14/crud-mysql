@@ -9,16 +9,15 @@ import (
 
 	"github.com/gorilla/mux"
 	nlog "github.com/nuveo/log"
+
 	//"github.com/prest/adapters/postgres"
+	"github.com/spf13/cobra"
 	mysql "github.com/suifengpiao14/crud-mysql/adapter-mysql"
 	"github.com/suifengpiao14/crud-mysql/config"
 	"github.com/suifengpiao14/crud-mysql/config/router"
 	"github.com/suifengpiao14/crud-mysql/controllers"
 	"github.com/suifengpiao14/crud-mysql/middlewares"
-	"github.com/spf13/cobra"
 	"github.com/urfave/negroni"
-	// postgres driver for migrate
-	_ "gopkg.in/mattes/migrate.v1/driver/postgres"
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -28,16 +27,16 @@ var RootCmd = &cobra.Command{
 	Long:  `Serve a RESTful API from any PostgreSQL database, start HTTP server`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if config.PrestConf.Adapter == nil {
-			nlog.Warningln("adapter is not set. Using the default (postgres)")
+			nlog.Warningln("adapter is not set. Using the default (mysql)")
 			mysql.Load()
 		}
-		if config.PrestConf.SocketPath !="" {
-			go func (){
+		if config.PrestConf.SocketPath != "" {
+			go func() {
 				startSocketServer()
 			}()
 		}
 		startServer()
-		
+
 	},
 }
 
@@ -110,8 +109,8 @@ func startServer() {
 
 // socket 服务
 func startSocketServer() {
-	 mux := http.NewServeMux()
-	 mux.Handle(config.PrestConf.ContextPath, MakeHandler())
+	mux := http.NewServeMux()
+	mux.Handle(config.PrestConf.ContextPath, MakeHandler())
 	l := log.New(os.Stdout, "[prest] ", 0)
 
 	if !config.PrestConf.AccessConf.Restrict {
@@ -122,15 +121,15 @@ func startSocketServer() {
 		nlog.DebugMode = config.PrestConf.Debug
 		nlog.Warningln("You are running pREST in debug mode.")
 	}
-	l.Printf("listening on %s and serving on %s", config.PrestConf.SocketPath,config.PrestConf.ContextPath)
+	l.Printf("listening on %s and serving on %s", config.PrestConf.SocketPath, config.PrestConf.ContextPath)
 	if err := os.RemoveAll(config.PrestConf.SocketPath); err != nil {
-        l.Fatal(err)
-    }
-	unixListener,err := net.Listen("unix",config.PrestConf.SocketPath)
-	if err!=nil{
+		l.Fatal(err)
+	}
+	unixListener, err := net.Listen("unix", config.PrestConf.SocketPath)
+	if err != nil {
 		l.Fatal(err)
 	}
 	defer unixListener.Close()
-	l.Fatal(http.Serve(unixListener,mux))
+	l.Fatal(http.Serve(unixListener, mux))
 
 }
