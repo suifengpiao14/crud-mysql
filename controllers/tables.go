@@ -267,6 +267,13 @@ func wrapRunQuery(isCount bool, sql string, values []interface{}, schema string,
 	return
 }
 
+// AsyncInsertInTables perform insert in specific table
+func AsyncInsertInTables(w http.ResponseWriter, r *http.Request) {
+	InsertInTables(w, r)
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("created"))
+}
+
 // InsertInTables perform insert in specific table
 func InsertInTables(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
