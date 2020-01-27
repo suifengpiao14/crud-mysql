@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/prest/helpers"
+	"github.com/suifengpiao14/crud-mysql/helpers"
 	"github.com/spf13/cobra"
 	// postgres driver for migrate
 	_ "gopkg.in/mattes/migrate.v1/driver/postgres"
