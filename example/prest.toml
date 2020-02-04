@@ -1,0 +1,31 @@
+migrations = "./migrations"
+
+# debug = true
+# enabling debug mode will disable JWT authorization
+
+
+[http]
+port = 8000 
+# Port 6000 is blocked on windows. You must change to 8080 or any unblocked port
+
+#[socket]
+#path = "prest.sock"
+
+[jwt]
+default = false
+key = "secret"
+algo = "HS256"
+
+
+
+[pg]
+URL = "mysql://root:123456@192.168.43.114:3306/test?sslmode=disable"
+
+[queries]
+location = "./queries/"
+
+[ssl]
+mode = "disable"
+sslcert = "./PATH"
+sslkey = "./PATH"
+sslrootcert = "./PATH"

@@ -269,7 +269,24 @@ func wrapRunQuery(isCount bool, sql string, values []interface{}, schema string,
 
 // AsyncInsertInTables perform insert in specific table
 func AsyncInsertInTables(w http.ResponseWriter, r *http.Request) {
-	go InsertInTables(w, r)
+	vars := mux.Vars(r)
+	database := vars["database"]
+	schema := vars["schema"]
+	table := vars["table"]
+
+	config.PrestConf.Adapter.SetDatabase(database)
+
+	columns, placeholders, values, err := config.PrestConf.Adapter.ParseInsertRequest(r)
+	if err != nil {
+		err = fmt.Errorf("could not perform InsertInTables: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	//async insert sql
+	go func() {
+		sql := config.PrestConf.Adapter.InsertSQL(database, schema, table, columns, placeholders)
+		config.PrestConf.Adapter.Insert(sql, values...)
+	}()
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("created"))
 }

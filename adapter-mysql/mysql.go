@@ -1244,8 +1244,8 @@ func (adapter *MySQL) SelectSQL(selectStr string, database string, schema string
 }
 
 // InsertSQL generate insert sql
-func (adapter *MySQL) InsertSQL(database string, schema string, table string, names string, placeholders string) string {
-	return fmt.Sprintf(statements.InsertQuery, database, table, names, placeholders)
+func (adapter *MySQL) InsertSQL(database string, schema string, table string, columns string, valuePlaceholders string) string {
+	return fmt.Sprintf(statements.InsertQuery, database, table, columns, valuePlaceholders)
 }
 
 // DeleteSQL generate delete sql
