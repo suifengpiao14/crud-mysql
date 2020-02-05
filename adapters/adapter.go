@@ -20,6 +20,7 @@ type Adapter interface {
 	DeleteSQL(database string, schema string, table string) string
 	DistinctClause(r *http.Request) (distinctQuery string, err error)
 	ExecuteScripts(method, sql string, values []interface{}) (sc Scanner)
+	ExecuteTpl(sql string, values []interface{}) (sc Scanner)
 	FieldsPermissions(r *http.Request, table string, op string) (fields []string, err error)
 	GetScript(verb, folder, scriptName string) (script string, err error)
 	GroupByClause(r *http.Request) (groupBySQL string)
@@ -32,6 +33,7 @@ type Adapter interface {
 	ParseBatchInsertRequest(r *http.Request) (colsName string, colsValue string, values []interface{}, err error)
 	ParseInsertRequest(r *http.Request) (colsName string, colsValue string, values []interface{}, err error)
 	ParseScript(scriptPath string, queryURL url.Values) (sqlQuery string, values []interface{}, err error)
+	ParseTpl(tplName, tplSQL string, queryURL url.Values) (sqlQuery string, values []interface{}, err error)
 	Query(SQL string, params ...interface{}) (sc Scanner)
 	QueryCount(SQL string, params ...interface{}) (sc Scanner)
 	ReturningByRequest(r *http.Request) (returningSyntax string, err error)

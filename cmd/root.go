@@ -10,7 +10,7 @@ import (
 	nlog "github.com/nuveo/log"
 
 	"github.com/spf13/cobra"
-	mysql "github.com/suifengpiao14/crud-mysql/adapter-mysql"
+	mysql "github.com/suifengpiao14/crud-mysql/adapters/mysql"
 	"github.com/suifengpiao14/crud-mysql/config"
 	"github.com/suifengpiao14/crud-mysql/config/router"
 	"github.com/suifengpiao14/crud-mysql/controllers"
@@ -60,6 +60,7 @@ func MakeHandler() http.Handler {
 	r.HandleFunc("/schemas", controllers.GetSchemas).Methods("GET")
 	r.HandleFunc("/tables", controllers.GetTables).Methods("GET")
 	r.HandleFunc("/_QUERIES/{queriesLocation}/{script}", controllers.ExecuteFromScripts)
+	r.HandleFunc("/tpl", controllers.ExecuteTplQuery)
 	r.HandleFunc("/{database}/{schema}", controllers.GetTablesByDatabaseAndSchema).Methods("GET")
 	crudRoutes := mux.NewRouter().PathPrefix("/").Subrouter().StrictSlash(true)
 	crudRoutes.HandleFunc("/{database}/{schema}/{table}", controllers.SelectFromTables).Methods("GET")
