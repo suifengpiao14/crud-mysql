@@ -10,8 +10,8 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/nuveo/log"
-	"github.com/suifengpiao14/crud-mysql/adapters"
 	"github.com/spf13/viper"
+	"github.com/suifengpiao14/crud-mysql/adapters"
 )
 
 // TablesConf informations
@@ -72,7 +72,7 @@ var (
 
 	configFile string
 
-	defaultFile = "./prest.toml"
+	defaultFile = "./config.toml"
 )
 
 func viperCfg() {
